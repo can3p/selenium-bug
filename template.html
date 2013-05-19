@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <input id="script" type="button" value="script"/>
+    <input id="xhr" type="button" value="xhr" />
+    <script type="text/javascript">
+      var script = document.querySelector('#script'),
+          xhr = document.querySelector('#xhr');
+
+      script.onclick = load_script;
+      xhr.onclick = load_xhr;
+
+      function set_state(el, state) {
+        el.value = state;
+        el.className = state;
+      }
+
+      function load_script() {
+        set_state(script, "loading");
+        var s = document.createElement('script');
+        s.src = '/script';
+        document.body.appendChild(s);
+      }
+
+      function script_loaded() {
+        set_state(script, "loaded");
+
+        setTimeout(function() {
+          set_state(script, "script");
+        }, 4000);
+      }
+
+      function load_xhr() {
+        set_state(xhr, "loading");
+
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open('GET', '/xhr', true);
+        xmlhttp.send(null);
+        xmlhttp.onload = xhr_loaded;
+      }
+
+      function xhr_loaded() {
+        set_state(xhr, "loaded");
+
+        setTimeout(function() {
+          set_state(xhr, "xhr");
+        }, 4000);
+      }
+    </script>
+</body>
+</html>
